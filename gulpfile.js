@@ -2,11 +2,14 @@ var gulp = require('gulp');
 var ts = require('gulp-typescript');
 var changed = require('gulp-changed');
 var browserSync = require('browser-sync').create();
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var gulpSequence = require('gulp-sequence')
 
 gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
-            baseDir: './'
+            baseDir: './dist'
         }
     });
 });
@@ -15,31 +18,26 @@ gulp.task('scripts-ts', () => {
     gulp.src(['./src/**/*.ts'])
         .pipe(ts({
             noImplicitAny: true,
-            module: 'commonjs',
-            target: 'es6',
             sourceMap: true
         }))
         .pipe(gulp.dest('./lib/'));
 });
 
 gulp.task('scripts-ts-example', () => {
-    gulp.src(['./src/**/*.ts'])
+    gulp.src(['./example/main.ts'])
         .pipe(ts({
             noImplicitAny: true,
-            module: 'commonjs',
-            target: 'es6',
-            sourceMap: true
+            sourceMap: true,
+            allowJs: true
         }))
-        .pipe(gulp.dest('./dist/lib'));
+        .pipe(gulp.dest('./example-lib/'));
+});
 
-    gulp.src(['./example/**/*.ts'])
-        .pipe(ts({
-            noImplicitAny: true,
-            module: 'commonjs',
-            target: 'es6',
-            sourceMap: true
-        }))
-        .pipe(gulp.dest('./dist/example'));
+gulp.task('scripts', () => {
+    browserify('example-lib/main.js')
+    .bundle()
+    .pipe(source('./main.js'))
+    .pipe(gulp.dest('./dist/main'));
 });
 
 gulp.task('htmlpage', () => {
@@ -53,11 +51,10 @@ gulp.task('htmlpage', () => {
 
 gulp.task('build', ['scripts-ts']);
 
-gulp.task('default', ['htmlpage', 'scripts-ts-example'], () => {
-    browserSync.init({
-        server: './dist'
-    });
+gulp.task('watch', gulpSequence('scripts-ts', 'scripts-ts-example', 'scripts'));
 
-    gulp.watch(['./src/**/*.ts', './example/**/*.ts'], ['scripts-ts-example', browserSync.reload]);
+gulp.task('default', ['htmlpage', 'watch', 'browser-sync'], () => {
+    gulp.watch(['./src/**/*.ts'], ['watch', browserSync.reload]);
+    gulp.watch(['./example/**/*.ts'], ['watch', browserSync.reload]);
     gulp.watch('./example/**/*.html', ['htmlpage', browserSync.reload]);
 });
