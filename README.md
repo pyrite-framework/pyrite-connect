@@ -16,8 +16,8 @@ const connect = new Connect({
 });
 
 connect.getRoutes()
-.then((controllers) => {
-  controllers.Users.createUser({ 
+.then((routes) => {
+  routes.Users.createUser({ 
     body: {
       name: "Foo",
       lastName: "Bar"
@@ -27,22 +27,22 @@ connect.getRoutes()
     console.log(user);
   });
 
-  controllers.Users.getUser({
+  routes.Users.getUser({
     params: { id: 1 }
   })
   .then((user) => {
     console.log(user);
   });
 
-  controllers.Users.getUsers()
+  routes.Users.getUsers()
   .then((users) => {
     console.log(users);
   });
 
-  controllers.Users.on.createUser((data, id) => {
+  routes.Users.on.createUser((data, id) => {
     console.log(data, id);
 
-    controllers.Users.off.createUser();
+    routes.Users.off.createUser();
   });
 });
 ```
