@@ -17,12 +17,31 @@ export function makeRequest(host: string, methodConfig: any, config: any, emitCo
 
     headers["Content-Type"] = "application/json";
 
-    return fetch(host + url, {
+    const query = reemplaceQuery(config);
+
+    return fetch(host + url + query, {
       method: methodConfig.action,
       headers: headers,
-      body: config ? config.body || {} : {}
-    });
+      body: config && config.body && JSON.stringify(config.body)
+    })
+    .then(checkStatus);
 }
+
+function checkStatus(response: any): any {
+  if (response.status >= 200 && response.status < 300) {
+    return response.text().then((text: string) => {
+      return text ? JSON.parse(text) : {}
+    });
+  } else {
+    return response.text().then((text: string) => {
+      throw text ? JSON.parse(text) : {}
+    });
+  }
+}
+
+function reemplaceQuery(config: any): string {
+  return config && config.query ? "?" + queryString.stringify(config.query) : "";
+};
 
 function reemplaceParams(url: string, config: any): string {
   if (!config || !config.params) return url;
@@ -45,7 +64,5 @@ function reemplaceParams(url: string, config: any): string {
 
   const result = finalUrl.join("/");
 
-  const query = config && config.query ? queryString.stringify(config.query) : "";
-
-  return result + query;
+  return result;
 }
