@@ -1,33 +1,27 @@
+import "whatwg-fetch";
+import * as queryString from "query-string";
+
 export function makeRequest(host: string, methodConfig: any, config: any, emitConfig: any): Promise<any> {
-  return new Promise((resolve: Function, reject: Function): void => {
-    const http_request = new XMLHttpRequest();
-    http_request.onreadystatechange = () => {
-      if (http_request.readyState == 4) {
-        const response = JSON.parse(http_request.responseText)
-
-        if (http_request.status >= 200 && http_request.status < 300) resolve(response);
-        else reject(response);
-      }
-    };
-
     const url: string = reemplaceParams(methodConfig.url, config);
 
-    http_request.open(methodConfig.action, host + url, true);
-
-    http_request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    const headers = config ? config.headers || {} : {};
 
     if (methodConfig.emits) {
-      http_request.setRequestHeader("pyrite-token", emitConfig.token);
+      headers["pyrite-token"] = emitConfig.token;
 
       if (config && config.emit) {
         const emitTo =  Array.isArray(config.emit) ? config.emit.join('|') : config.emit;
-
-        http_request.setRequestHeader("pyrite-id", emitTo);
+        headers["pyrite-id"] = emitTo;
       }
     }
 
-    http_request.send((config && config.body) ? JSON.stringify(config.body) : null);
-  });
+    headers["Content-Type"] = "application/json";
+
+    return fetch(host + url, {
+      method: methodConfig.action,
+      headers: headers,
+      body: config ? config.body || {} : {}
+    });
 }
 
 function reemplaceParams(url: string, config: any): string {
@@ -49,5 +43,9 @@ function reemplaceParams(url: string, config: any): string {
     finalUrl.push(config.params[param].toString());
   });
 
-  return finalUrl.join("/");
+  const result = finalUrl.join("/");
+
+  const query = config && config.query ? queryString.stringify(config.query) : "";
+
+  return result + query;
 }
