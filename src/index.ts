@@ -24,6 +24,8 @@ export class Connect {
       };
 
       this.controllers = this.buildControllers(controllers);
+
+      return this.controllers;
     });
 
     //const socket: SocketIOClient.Socket = io(this.params.url)
