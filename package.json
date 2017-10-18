@@ -21,9 +21,7 @@
   },
   "dependencies": {
     "@types/query-string": "^5.0.0",
-    "@types/socket.io-client": "^1.4.31",
     "query-string": "^5.0.0",
-    "socket.io-client": "^2.0.3",
     "whatwg-fetch": "^2.0.3"
   }
 }

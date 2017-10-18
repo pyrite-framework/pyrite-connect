@@ -1,26 +1,26 @@
 import "whatwg-fetch";
 import * as queryString from "query-string";
 
-export function makeRequest(host: string, methodConfig: any, config: any, emitConfig: any): Promise<any> {
-    const url: string = reemplaceParams(methodConfig.url, config);
+export function makeRequest(host: string, methodConfig: any = {}, config: any = {}): Promise<any> {
+    const url: string = methodConfig ? reemplaceParams(methodConfig.url, config) : "";
 
     const headers = config ? config.headers || {} : {};
 
-    if (methodConfig.emits) {
-      headers["pyrite-token"] = emitConfig.token;
+    // if (methodConfig.emits) {
+    //   headers["pyrite-token"] = emitConfig.token;
 
-      if (config && config.emit) {
-        const emitTo =  Array.isArray(config.emit) ? config.emit.join('|') : config.emit;
-        headers["pyrite-id"] = emitTo;
-      }
-    }
+    //   if (config && config.emit) {
+    //     const emitTo =  Array.isArray(config.emit) ? config.emit.join('|') : config.emit;
+    //     headers["pyrite-id"] = emitTo;
+    //   }
+    // }
 
     headers["Content-Type"] = "application/json";
 
     const query = reemplaceQuery(config);
 
     return fetch(host + url + query, {
-      method: methodConfig.action,
+      method: methodConfig.action || "GET",
       headers: headers,
       body: config && config.body && JSON.stringify(config.body)
     })

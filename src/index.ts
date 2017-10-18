@@ -1,4 +1,4 @@
-import * as io from "socket.io-client";
+// import * as io from "socket.io-client";
 import { makeRequest } from "./utils";
 
 type ConnectParameters = {
@@ -7,50 +7,61 @@ type ConnectParameters = {
 
 export class Connect {
   private controllers: any;
-  private id: string;
-  private token: string;
+  // private id: string;
+  // private token: string;
+  private connect: Promise<any>;
 
-  constructor(private params: ConnectParameters) {}
+  constructor(private params: ConnectParameters) {
+    this.connect = makeRequest(params.url);
+  }
 
   public getRoutes(): Promise<any> {
     if (this.controllers) return Promise.resolve(this.controllers);
 
-    const socket: SocketIOClient.Socket = io(this.params.url)
+    this.connect.then((controllersAllowed) => {
+      const controllers = {
+        controllers: controllersAllowed
+      };
 
-    return new Promise((resolve, reject): void => {
-      socket.on('controllersAllowed', (controllersAllowed: any) => {
-        this.controllers = this.buildControllers(controllersAllowed, socket);
-        this.id = controllersAllowed.id;
-        this.token = controllersAllowed.token;
-
-        resolve(this.controllers);
-      });
+      this.controllers = this.buildControllers(controllers);
     });
+
+    //const socket: SocketIOClient.Socket = io(this.params.url)
+
+    // return new Promise((resolve, reject): void => {
+    //   socket.on('controllersAllowed', (controllersAllowed: any) => {
+    //     this.controllers = this.buildControllers(controllersAllowed, socket);
+    //     this.id = controllersAllowed.id;
+    //     this.token = controllersAllowed.token;
+
+    //     resolve(this.controllers);
+    //   });
+    // });
   }
 
-  private createOnEvent(socket: SocketIOClient.Socket, controller: any, controllerName: string, methodName: string) {
-    if (!controller.on) controller.on = {};
-    if (!controller.off) controller.off = {};
+  // private createOnEvent(socket: SocketIOClient.Socket, controller: any, controllerName: string, methodName: string) {
+  //   if (!controller.on) controller.on = {};
+  //   if (!controller.off) controller.off = {};
 
-    const eventName: string = controllerName + ".on." + methodName;
+  //   const eventName: string = controllerName + ".on." + methodName;
 
-    let callback: Function = (): any => {};
+  //   let callback: Function = (): any => {};
 
-    const listener: Function = (response: any): void => {
-      callback(response.data, response.id);
-    };
+  //   const listener: Function = (response: any): void => {
+  //     callback(response.data, response.id);
+  //   };
 
-    controller.on[methodName] = (emitCallback: Function): void => {
-      callback = emitCallback;
-      socket.on(eventName, listener);
-    };
+  //   controller.on[methodName] = (emitCallback: Function): void => {
+  //     callback = emitCallback;
+  //     socket.on(eventName, listener);
+  //   };
 
-    controller.off[methodName] = (): void => {
-      socket.removeListener(eventName, listener);
-    };
-  }
+  //   controller.off[methodName] = (): void => {
+  //     socket.removeListener(eventName, listener);
+  //   };
+  // }
 
-  private buildControllers(controllersAllowed: any, socket: SocketIOClient.Socket): void {
+  private buildControllers(controllersAllowed: any): void {
     const controllersConfig = controllersAllowed.controllers;
     const controllerNames: Array<string> = Object.keys(controllersConfig);
 
@@ -64,10 +75,10 @@ export class Connect {
       methods.forEach((methodName: string): void => {
         const config = controllersConfig[controllerName][methodName];
 
-        if (config.emits) this.createOnEvent(socket, controllers[controllerName], controllerName, methodName);
+        // if (config.emits) this.createOnEvent(socket, controllers[controllerName], controllerName, methodName);
 
         controllers[controllerName][methodName] = (params: any) => {
-          return makeRequest(this.params.url, config, params, controllersAllowed);
+          return makeRequest(this.params.url, config, params);
         };
       })
     })
