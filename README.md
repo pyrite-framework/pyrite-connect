@@ -9,9 +9,9 @@ npm install pyrite-connect
 ## Example
 
 ```typescript
-import { Connect } from "pyrite-connect";
+import { PyriteConnect } from "pyrite-connect";
 
-const connect = new Connect({
+const connect = new PyriteConnect({
   url: 'http://localhost:8080'
 });
 
@@ -37,12 +37,6 @@ connect.getRoutes()
   routes.Users.getUsers()
   .then((users) => {
     console.log(users);
-  });
-
-  routes.Users.on.createUser((data, id) => {
-    console.log(data, id);
-
-    routes.Users.off.createUser();
   });
 });
 ```

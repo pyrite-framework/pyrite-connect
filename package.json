@@ -1,27 +1,28 @@
 {
-  "name": "pyrite-connect",
-  "version": "0.0.7",
-  "description": "Pyrite Connect",
-  "main": "lib/index.js",
-  "scripts": {
-    "build": "tsc",
-    "watch": "webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pyrite-framework/pyrite-connect.git"
-  },
-  "author": "Fabio Garcia",
-  "license": "MIT",
-  "devDependencies": {
-    "awesome-typescript-loader": "^3.2.1",
-    "source-map-loader": "^0.2.1",
-    "typescript": "^2.5.3",
-    "webpack": "^3.3.0"
-  },
-  "dependencies": {
-    "@types/query-string": "^5.0.0",
-    "query-string": "^5.0.0",
-    "whatwg-fetch": "^2.0.3"
-  }
+	"name": "pyrite-connect",
+	"version": "0.1.0",
+	"description": "Pyrite Connect",
+	"main": "lib/index.js",
+	"types": "lib/src/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"watch": "webpack"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pyrite-framework/pyrite-connect.git"
+	},
+	"author": "Fabio Garcia",
+	"license": "MIT",
+	"devDependencies": {
+		"awesome-typescript-loader": "^3.2.1",
+		"source-map-loader": "^0.2.1",
+		"typescript": "^2.5.3",
+		"webpack": "^3.3.0",
+		"@types/query-string": "^5.0.0"
+	},
+	"dependencies": {
+		"query-string": "^5.0.0",
+		"whatwg-fetch": "^2.0.3"
+	}
 }

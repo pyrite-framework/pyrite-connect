@@ -1,20 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "outDir": "./lib"
-  },
-  "exclude": [
-    "node_modules",
-    "example"
-  ]
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"sourceMap": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"lib": [
+			"es2015",
+			"dom"
+		],
+		"noImplicitAny": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"outDir": "./lib",
+		"declaration": true
+	},
+	"exclude": [
+		"node_modules",
+		"example"
+	]
 }

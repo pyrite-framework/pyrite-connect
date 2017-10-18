@@ -6,15 +6,6 @@ export function makeRequest(host: string, methodConfig: any = {}, config: any = 
 
     const headers = config ? config.headers || {} : {};
 
-    // if (methodConfig.emits) {
-    //   headers["pyrite-token"] = emitConfig.token;
-
-    //   if (config && config.emit) {
-    //     const emitTo =  Array.isArray(config.emit) ? config.emit.join('|') : config.emit;
-    //     headers["pyrite-id"] = emitTo;
-    //   }
-    // }
-
     headers["Content-Type"] = "application/json";
 
     const query = reemplaceQuery(config);
