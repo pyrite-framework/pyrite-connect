@@ -18,7 +18,7 @@ export class Connect {
   public getRoutes(): Promise<any> {
     if (this.controllers) return Promise.resolve(this.controllers);
 
-    this.connect.then((controllersAllowed) => {
+    return this.connect.then((controllersAllowed) => {
       const controllers = {
         controllers: controllersAllowed
       };
