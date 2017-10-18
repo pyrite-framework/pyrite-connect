@@ -2,7 +2,7 @@ import "whatwg-fetch";
 import * as queryString from "query-string";
 
 export function makeRequest(host: string, methodConfig: any = {}, config: any = {}): Promise<any> {
-    const url: string = methodConfig ? reemplaceParams(methodConfig.url, config) : "";
+    const url: string = methodConfig.url ? reemplaceParams(methodConfig.url, config) : "";
 
     const headers = config ? config.headers || {} : {};
 

@@ -1,6 +1,6 @@
 {
   "name": "pyrite-connect",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Pyrite Connect",
   "main": "lib/index.js",
   "scripts": {
