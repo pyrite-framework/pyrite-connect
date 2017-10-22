@@ -1,4 +1,4 @@
-import "whatwg-fetch";
+import * as m from "mithril";
 import * as queryString from "query-string";
 
 export function makeRequest(host: string, methodConfig: any = {}, config: any = {}): Promise<any> {
@@ -10,24 +10,11 @@ export function makeRequest(host: string, methodConfig: any = {}, config: any = 
 
     const query = reemplaceQuery(config);
 
-    return fetch(host + url + query, {
+    return m.request(host + url + query, {
       method: methodConfig.action || "GET",
       headers: headers,
-      body: config && config.body && JSON.stringify(config.body)
-    })
-    .then(checkStatus);
-}
-
-function checkStatus(response: any): any {
-  if (response.status >= 200 && response.status < 300) {
-    return response.text().then((text: string) => {
-      return text ? JSON.parse(text) : {}
+      data: config.body
     });
-  } else {
-    return response.text().then((text: string) => {
-      throw text ? JSON.parse(text) : {}
-    });
-  }
 }
 
 function reemplaceQuery(config: any): string {
@@ -42,14 +29,14 @@ function reemplaceParams(url: string, config: any): string {
 
   routes.forEach((route: string): any => {
     const isParam: Boolean = route[0] == ":";
-    
+
     if (!isParam) return finalUrl.push(route);
 
     const param: string = route.substring(1, route.length);
     const finalParam: string = config.params[param];
 
     if (!finalParam) throw "Param not set: " + param;
-    
+
     finalUrl.push(config.params[param].toString());
   });
 

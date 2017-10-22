@@ -1,6 +1,6 @@
 {
 	"name": "pyrite-connect",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Pyrite Connect",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"query-string": "^5.0.0",
-		"whatwg-fetch": "^2.0.3"
+		"@types/mithril": "^1.1.10",
+    	"mithril": "^1.1.5"
 	}
 }
