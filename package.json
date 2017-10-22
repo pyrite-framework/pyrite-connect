@@ -1,9 +1,9 @@
 {
 	"name": "pyrite-connect",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Pyrite Connect",
 	"main": "lib/index.js",
-	"types": "lib/src/index.d.ts",
+	"types": "lib/index.d.ts",
 	"scripts": {
 		"build": "tsc",
 		"watch": "webpack"
