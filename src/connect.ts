@@ -45,14 +45,32 @@ export class PyriteConnect {
 			methods.forEach((methodName: string): void => {
 				const config = controllersAllowed[controllerName][methodName];
 
-				controllers[controllerName][methodName] = (params: any) => {
+				controllers[controllerName][methodName] = (...attrs: Array<any>) => {
+					const params = {};
+
+					if (config.attrs) {
+						config.attrs.forEach((attr: any, index: number) => {
+							if (!["body", "query", "param"].includes(attr.param)) return;
+
+							if (attr.key) {
+								if (!params[attr.param]) params[attr.param] = {};
+								params[attr.param][attr.key] = attrs[index];
+								return;
+							}
+
+							params[attr.param] = attrs[index];
+						});
+					}
+
+					if (attrs.length > config.attrs.length) Object.assign(params, attrs[config.attrs.length - 1]);
+
 					if (this.plugins) {
 						this.plugins.forEach((plugin: any) => plugin.run(params));
 					}
 					return makeRequest(this.params.url, config, params);
 				};
-			})
-		})
+			});
+		});
 
 		return controllers;
 	}
