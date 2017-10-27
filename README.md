@@ -17,19 +17,15 @@ const connect = new PyriteConnect({
 
 connect.getRoutes()
 .then((routes) => {
-  routes.Users.createUser({ 
-    body: {
-      name: "Foo",
-      lastName: "Bar"
-    }
+  routes.Users.createUser({
+    name: "Foo",
+    lastName: "Bar"
   })
   .then((user) => {
     console.log(user);
   });
 
-  routes.Users.getUser({
-    params: { id: 1 }
-  })
+  routes.Users.getUser(id)
   .then((user) => {
     console.log(user);
   });
