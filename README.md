@@ -25,7 +25,7 @@ connect.getRoutes()
     console.log(user);
   });
 
-  routes.Users.getUser(id)
+  routes.Users.getUser(1)
   .then((user) => {
     console.log(user);
   });
