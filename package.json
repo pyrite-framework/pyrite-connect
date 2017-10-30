@@ -1,6 +1,6 @@
 {
 	"name": "pyrite-connect",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Pyrite Connect",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
@@ -18,11 +18,9 @@
 		"awesome-typescript-loader": "^3.2.1",
 		"source-map-loader": "^0.2.1",
 		"typescript": "^2.5.3",
-		"webpack": "^3.3.0",
-		"@types/query-string": "^5.0.0"
+		"webpack": "^3.3.0"
 	},
 	"dependencies": {
-		"query-string": "^5.0.0",
 		"@types/mithril": "^1.1.10",
     	"mithril": "^1.1.5"
 	}

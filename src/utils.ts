@@ -1,5 +1,4 @@
 import * as m from "mithril";
-import * as queryString from "query-string";
 
 export function makeRequest(host: string, methodConfig: any = {}, config: any = {}): Promise<any> {
 	const url: string = methodConfig.url ? reemplaceParams(methodConfig.url, config) : "";
@@ -18,7 +17,7 @@ export function makeRequest(host: string, methodConfig: any = {}, config: any = 
 }
 
 function reemplaceQuery(config: any): string {
-	return config && config.query ? "?" + queryString.stringify(config.query) : "";
+	return config && config.query ? "?" + m.buildQueryString(config.query) : "";
 };
 
 function reemplaceParams(url: string, config: any): string {
