@@ -67,7 +67,7 @@ export class PyriteConnect {
 		let totalParams = 0;
 
 		config.params.forEach((attr: any, index: number) => {
-			if (!["body", "query", "param"].includes(attr.param)) return;
+			if (!["body", "query", "params"].includes(attr.param)) return;
 			totalParams++;
 
 			if (attr.key) {
